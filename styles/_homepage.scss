@@ -1,0 +1,58 @@
+main {
+    background-image: linear-gradient(to bottom, #2561a0, skyblue);
+    min-height: 100vh;
+    padding-top: 50px;
+    color: white;
+}
+
+header {
+    @include flexCenter;
+    height: 100px;
+    color: white;
+    background-color: #2561a0;
+    padding-top: 50px;
+}
+
+h1 {
+    margin: 0 50px;
+}
+
+form {
+    @include flexCenter;
+}
+
+.inputOptionOne,
+.inputOptionTwo {
+    width: 33%;
+    height: 700px;
+    order: 1;
+    position: relative;
+    background-size: cover;
+    @include flexCenter;
+    border-radius: 5%;
+}
+
+.infoOne,
+.infoTwo {
+    @include buttonStyle;
+    @include flexCenter;
+    flex-direction: column;
+}
+
+.center {
+    width: 33%;
+    order: 2;
+    @include flexCenter;
+    flex-direction: column;
+    text-align: center;
+}
+
+.nextQuestion {
+    @include buttonStyle;
+    padding: 10px;
+}
+
+.inputOptionTwo {
+    width: 33%;
+    order: 3;
+}

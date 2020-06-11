@@ -414,7 +414,6 @@ let valueTwo = 0;
 let answer = 0;
 
 const getWeather = function () {
-
     $.ajax({
         url: weatherQuiz.apiURL,
         method: 'GET',
@@ -441,6 +440,40 @@ const getWeather = function () {
         valueTwo = (res.data[0].temp)
     });
 }
+
+const getCityImages = function () {
+    $.ajax({
+        url: 'https://api.unsplash.com/search/photos/',
+        method: 'GET',
+        dataType: 'json',
+        data: {
+            client_id: 'wPc_7irjVjTU9ez7gjehFg6qAyrOd2HEkx_YY397uts',
+            query: cityOne,
+            per_page: 1
+        }
+    }).then(function (res) {
+
+        // let backGroundOne = {background-image: `${res.results[0].urls.full}`}
+        $('.inputOptionOne').css('background-image', `url(${res.results[0].urls.full})`)
+
+    });
+
+    $.ajax({
+        url: 'https://api.unsplash.com/search/photos/',
+        method: 'GET',
+        dataType: 'json',
+        data: {
+            client_id: 'wPc_7irjVjTU9ez7gjehFg6qAyrOd2HEkx_YY397uts',
+            query: cityTwo,
+            per_page: 1
+        }
+    }).then(function (res) {
+        $('.inputOptionTwo').css('background-image', `url(${res.results[0].urls.full})`)
+    });
+
+}
+
+getCityImages();
 
 const getCity = function () {
     let randOne = Math.floor(Math.random() * locales.length);
@@ -477,13 +510,13 @@ const getUserAnswer =function(){
 // respond with correct or incorrect styling and display current temperatures for both locations
 // populate next question
 
-quizStartcity: init = () => {
-    // on button start run init
-    getCity();
-    getUserAnswer();
-    getWeather();
-}
+// quizStartcity: init = () => {
+//     // on button start run init
+//     getCity();
+//     getUserAnswer();
+//     getWeather();
+// }
 
-$(function () {
-    quizStartcity: init();
-})
+// $(function () {
+//     quizStartcity: init();
+// })
