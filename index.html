@@ -4,30 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Where's the Weather Better?</title>
+    <link rel="stylesheet" href="./styles/style.css">
 </head>
 
 <body>
-
-    <h1>
-        Where's the weather better?
-    </h1>
-
+    <header>
+        <img src="./assets/sun.jpg" alt="sunny icon">
+        <h1>Where's the weather better?</h1>
+        <img src="./assets/rain.jpg" alt="rainy icon">
+    </header>
     <main>
-        <h2>
-            <!-- question goes here -->
-        </h2>
+        <div class="wrapper">
+            <form action="POST">
+                <div class="center">
+                    <h2>Where is it warmer?</h2>
+                    <div class="nextQuestion">Next Question</div>
+                    <h2>ANSWER GOES HERE</h2>
 
-        <form action="POST">
-            <label for="optionOne" class="cityOne"></label>
-            <input type="radio" id="optionOne" name="answer">
-
-            <label for="optionTwo" class="cityTwo"></label>
-            <input type="radio" id="optionTwo" name="answer">
-        </form>
-
-        <button class="submit">
-            <!-- submit answer and next question button goes here -->
-        </button>
+                </div>
+                <div class="inputOptionOne">
+                    <div class="infoOne">
+                        <label for="optionOne" class="cityOne">Toronto</label>
+                        <input type="radio" id="optionOne" name="answer">
+                        <h3>TEMP GOES HERE</h3>
+                    </div>
+                </div>  
+                <div class="inputOptionTwo">
+                    <div class="infoTwo">
+                        <label for="optionTwo" class="cityTwo">Los Angelos</label>
+                        <input type="radio" id="optionTwo" name="answer">
+                        <h3>TEMP GOES HERE</h3>
+                    </div>
+                </div>
+            </form>
+            </button>
+        </div>
     </main>
 
     <footer>
