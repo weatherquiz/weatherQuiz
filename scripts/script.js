@@ -240,10 +240,6 @@ const locales = [
         country: 'Canada'
     },
     {
-        city: 'Moorea',
-        country: 'Tahiti'
-    },
-    {
         city: 'Moscow',
         country: 'Russia'
     },
@@ -405,13 +401,11 @@ const weatherQuiz = {};
 weatherQuiz.apiURL = 'https://api.weatherbit.io/v2.0/current';
 weatherQuiz.apikey = '651ad6758ca042e2ba4e3da504485e1d';
 
-let cityOne = 'toronto';
-let cityTwo = 'los angeles';
+let cityOne = '';
+let cityTwo = '';
 
 let valueOne = 0;
 let valueTwo = 0;
-
-let answer = 0;
 
 const getWeather = function () {
     $.ajax({
@@ -452,10 +446,7 @@ const getCityImages = function () {
             per_page: 1
         }
     }).then(function (res) {
-
-        // let backGroundOne = {background-image: `${res.results[0].urls.full}`}
-        $('.inputOptionOne').css('background-image', `url(${res.results[0].urls.full})`)
-
+        $('.inputOptionOne').css('background-image', `url(${res.results[0].urls.small})`)
     });
 
     $.ajax({
@@ -468,12 +459,10 @@ const getCityImages = function () {
             per_page: 1
         }
     }).then(function (res) {
-        $('.inputOptionTwo').css('background-image', `url(${res.results[0].urls.full})`)
+        $('.inputOptionTwo').css('background-image', `url(${res.results[0].urls.small})`)
     });
 
 }
-
-getCityImages();
 
 const getCity = function () {
     let randOne = Math.floor(Math.random() * locales.length);
@@ -486,17 +475,55 @@ const getCity = function () {
     $('.cityTwo').html(cityTwo);
 }
 
-const getAnswer = function(){
-    if (valueOne > valueTwo){
-        answer = valueOne;
-    } else {
-        answer = valueTwo;
+const refresh = function () {
+    // $('h4').clear();
+    // $('h4::after').empty();
+    // $('.h4::before').empty();
+    // $('.incorrect::after').empty();
+    // $('.incorrect::before').empty();
+    $('div').removeClass('.correctImage')
+    $('div').removeClass('.incorrectImage')
+};
+
+$('.nextQuestion').on('click', function() {
+    refresh();
+    // getCity().then(
+    //     getWeather(),
+    //     getCityImages()
+    // )
+})
+
+
+
+
+$('.inputOptionOne').on('click', function() {
+    // checking if option 1 is correct answer, and using hasClass to prevent multiple activations per question
+    if (valueOne > valueTwo && !$('h4').hasClass('incorrect')) {
+        $('h4').addClass('correct').text('Correct!')
+        $('.inputOptionOne').addClass('correctImage')
+        $('.inputOptionTwo').addClass('incorrectImage')
+    } else if (valueOne < valueTwo && !$('h4').hasClass('correct')){
+        $('h4').addClass('incorrect').text('Incorrect!')
+        $('.inputOptionOne').addClass('incorrectImage')
+        $('.inputOptionTwo').addClass('correctImage')
     }
-};
-
-const getUserAnswer =function(){
-
-};
+    $('.answerOne').html(valueOne)
+    $('.answerTwo').html(valueTwo)
+})
+$('.inputOptionTwo').on('click', function() {
+        // checking if option 2 is correct answer, and using hasClass to prevent multiple activations per question
+    if (valueOne < valueTwo && !$('h4').hasClass('incorrect')) {
+        $('h4').addClass('correct').text('Correct!')
+        $('.inputOptionTwo').addClass('correctImage')
+        $('.inputOptionOne').addClass('incorrectImage')
+    } else if (valueOne > valueTwo && !$('h4').hasClass('correct')) {
+        $('h4').addClass('incorrect').text('Incorrect!')
+        $('.inputOptionTwo').addClass('incorrectImage')
+        $('.inputOptionOne').addClass('correctImage')
+    }
+    $('.answerOne').html(valueOne)
+    $('.answerTwo').html(valueTwo)
+})
 
 
 
@@ -510,13 +537,14 @@ const getUserAnswer =function(){
 // respond with correct or incorrect styling and display current temperatures for both locations
 // populate next question
 
-// quizStartcity: init = () => {
-//     // on button start run init
+// quizStartcity.init = () => {
 //     getCity();
-//     getUserAnswer();
+//     getCityImages();
 //     getWeather();
 // }
 
-// $(function () {
-//     quizStartcity: init();
-// })
+$(function () {
+    getCity();
+    getCityImages();
+    getWeather();
+})
