@@ -401,24 +401,24 @@ const weatherQuiz = {};
 weatherQuiz.apiURL = 'https://api.weatherbit.io/v2.0/current';
 weatherQuiz.apikey = '651ad6758ca042e2ba4e3da504485e1d';
 
-let cityOne = '';
-let cityTwo = '';
+weatherQuiz.cityOne = '';
+weatherQuiz.cityTwo = '';
 
-let valueOne = 0;
-let valueTwo = 0;
+weatherQuiz.valueOne = 0;
+weatherQuiz.valueTwo = 0;
 
-const getWeather = function () {
+weatherQuiz.getWeather = function () {
     $.ajax({
         url: weatherQuiz.apiURL,
         method: 'GET',
         dataType: 'json',
         data: {
             key: weatherQuiz.apikey,
-            city: cityOne,
+            city: weatherQuiz.cityOne,
             format: 'json'
         }
     }).then(function (res) {
-        valueOne = (res.data[0].temp);
+        weatherQuiz.valueOne = (res.data[0].temp);
     });
 
     $.ajax({
@@ -427,22 +427,22 @@ const getWeather = function () {
         dataType: 'json',
         data: {
             key: weatherQuiz.apikey,
-            city: cityTwo,
+            city: weatherQuiz.cityTwo,
             format: 'json'
         }
     }).then(function (res) {
-        valueTwo = (res.data[0].temp)
+        weatherQuiz.valueTwo = (res.data[0].temp)
     });
 }
 
-const getCityImages = function () {
+weatherQuiz.getCityImages = function () {
     $.ajax({
         url: 'https://api.unsplash.com/search/photos/',
         method: 'GET',
         dataType: 'json',
         data: {
             client_id: 'wPc_7irjVjTU9ez7gjehFg6qAyrOd2HEkx_YY397uts',
-            query: cityOne,
+            query: weatherQuiz.cityOne,
             per_page: 1
         }
     }).then(function (res) {
@@ -455,7 +455,7 @@ const getCityImages = function () {
         dataType: 'json',
         data: {
             client_id: 'wPc_7irjVjTU9ez7gjehFg6qAyrOd2HEkx_YY397uts',
-            query: cityTwo,
+            query: weatherQuiz.cityTwo,
             per_page: 1
         }
     }).then(function (res) {
@@ -464,33 +464,30 @@ const getCityImages = function () {
 
 }
 
-const getCity = function () {
-    let randOne = Math.floor(Math.random() * locales.length);
-    let randTwo = Math.floor(Math.random() * locales.length);
+weatherQuiz.getCity = function () {
+    weatherQuiz.randOne = Math.floor(Math.random() * locales.length);
+    weatherQuiz.randTwo = Math.floor(Math.random() * locales.length);
 
-    cityOne = locales[randOne].city;
-    cityTwo = locales[randTwo].city;
+    weatherQuiz.cityOne = locales[weatherQuiz.randOne].city;
+    weatherQuiz.cityTwo = locales[weatherQuiz.randTwo].city;
 
-    $('.cityOne').html(cityOne);
-    $('.cityTwo').html(cityTwo);
+    $('.cityOne').html(weatherQuiz.cityOne);
+    $('.cityTwo').html(weatherQuiz.cityTwo);
 }
 
-const refresh = function () {
-    // $('h4').clear();
-    // $('h4::after').empty();
-    // $('.h4::before').empty();
-    // $('.incorrect::after').empty();
-    // $('.incorrect::before').empty();
-    $('div').removeClass('.correctImage')
-    $('div').removeClass('.incorrectImage')
+weatherQuiz.refresh = function () {
+    $('h4').empty().removeClass('correct').removeClass('incorrect');
+    $('h3').empty()
+    $('div').removeClass('correctImage').removeClass('incorrectImage')
 };
 
 $('.nextQuestion').on('click', function() {
-    refresh();
-    // getCity().then(
-    //     getWeather(),
-    //     getCityImages()
-    // )
+    if ($('h4').hasClass('correct') || $('h4').hasClass('incorrect')) {
+        weatherQuiz.refresh();
+        weatherQuiz.getCity()
+        weatherQuiz.getWeather(),
+        weatherQuiz.getCityImages()
+    }
 })
 
 
@@ -498,31 +495,31 @@ $('.nextQuestion').on('click', function() {
 
 $('.inputOptionOne').on('click', function() {
     // checking if option 1 is correct answer, and using hasClass to prevent multiple activations per question
-    if (valueOne > valueTwo && !$('h4').hasClass('incorrect')) {
+    if (weatherQuiz.valueOne > weatherQuiz.valueTwo && !$('h4').hasClass('incorrect')) {
         $('h4').addClass('correct').text('Correct!')
         $('.inputOptionOne').addClass('correctImage')
         $('.inputOptionTwo').addClass('incorrectImage')
-    } else if (valueOne < valueTwo && !$('h4').hasClass('correct')){
+    } else if (weatherQuiz.valueOne < weatherQuiz.valueTwo && !$('h4').hasClass('correct')){
         $('h4').addClass('incorrect').text('Incorrect!')
         $('.inputOptionOne').addClass('incorrectImage')
         $('.inputOptionTwo').addClass('correctImage')
     }
-    $('.answerOne').html(valueOne)
-    $('.answerTwo').html(valueTwo)
+    $('.answerOne').html(weatherQuiz.valueOne)
+    $('.answerTwo').html(weatherQuiz.valueTwo)
 })
 $('.inputOptionTwo').on('click', function() {
         // checking if option 2 is correct answer, and using hasClass to prevent multiple activations per question
-    if (valueOne < valueTwo && !$('h4').hasClass('incorrect')) {
+    if (weatherQuiz.valueOne < weatherQuiz.valueTwo && !$('h4').hasClass('incorrect')) {
         $('h4').addClass('correct').text('Correct!')
         $('.inputOptionTwo').addClass('correctImage')
         $('.inputOptionOne').addClass('incorrectImage')
-    } else if (valueOne > valueTwo && !$('h4').hasClass('correct')) {
+    } else if (weatherQuiz.valueOne > weatherQuiz.valueTwo && !$('h4').hasClass('correct')) {
         $('h4').addClass('incorrect').text('Incorrect!')
         $('.inputOptionTwo').addClass('incorrectImage')
         $('.inputOptionOne').addClass('correctImage')
     }
-    $('.answerOne').html(valueOne)
-    $('.answerTwo').html(valueTwo)
+    $('.answerOne').html(weatherQuiz.valueOne)
+    $('.answerTwo').html(weatherQuiz.valueTwo)
 })
 
 
@@ -544,7 +541,7 @@ $('.inputOptionTwo').on('click', function() {
 // }
 
 $(function () {
-    getCity();
-    getCityImages();
-    getWeather();
+    weatherQuiz.getCity();
+    weatherQuiz.getCityImages();
+    weatherQuiz.getWeather();
 })
