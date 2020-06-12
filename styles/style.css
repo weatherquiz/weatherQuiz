@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html {
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
@@ -369,4 +370,32 @@ form {
   -webkit-box-ordinal-group: 4;
       -ms-flex-order: 3;
           order: 3;
+}
+
+.correct {
+  color: green;
+}
+
+.correct::before,
+.correct::after {
+  content: ' ✔️ ';
+}
+
+.incorrect {
+  color: red;
+}
+
+.incorrect::before,
+.incorrect::after {
+  content: ' ❌ ';
+}
+
+.correctImage {
+  -webkit-box-shadow: 0 0 18px 10px green;
+          box-shadow: 0 0 18px 10px green;
+}
+
+.incorrectImage {
+  -webkit-box-shadow: 0 0 18px 10px red;
+          box-shadow: 0 0 18px 10px red;
 }

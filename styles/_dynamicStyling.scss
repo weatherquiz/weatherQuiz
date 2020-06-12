@@ -1,0 +1,25 @@
+.correct {
+    color: green;
+}
+
+.correct::before,
+.correct::after {
+    content: ' ✔️ ';
+}
+
+.incorrect {
+    color: red;
+}
+
+.incorrect::before,
+.incorrect::after {
+    content: ' ❌ ';
+}
+
+.correctImage {
+    box-shadow: 0 0 18px 10px green;
+}
+
+.incorrectImage {
+    box-shadow: 0 0 18px 10px red;
+}
