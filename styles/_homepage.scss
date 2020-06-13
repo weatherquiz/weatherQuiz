@@ -37,6 +37,7 @@ form {
     @include buttonStyle;
     @include flexCenter;
     flex-direction: column;
+    padding: 10px;
 }
 
 .center {

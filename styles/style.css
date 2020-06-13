@@ -236,7 +236,7 @@ html {
   overflow: hidden;
 }
 
-h1, h2 {
+h1, h2, h3 {
   margin: 0;
 }
 
@@ -325,6 +325,7 @@ form {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  padding: 10px;
 }
 
 .infoOne:hover, .infoOne:focus,

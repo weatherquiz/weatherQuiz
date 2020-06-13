@@ -404,8 +404,36 @@ weatherQuiz.apikey = '651ad6758ca042e2ba4e3da504485e1d';
 weatherQuiz.cityOne = '';
 weatherQuiz.cityTwo = '';
 
+
 weatherQuiz.valueOne = 0;
 weatherQuiz.valueTwo = 0;
+
+weatherQuiz.currentQuestion = '';
+
+class Question {
+    constructor(Phrase, API, units) {
+        this.questionPhrase = Phrase
+        this.API = API
+        this.units = units
+    }
+}
+
+
+
+weatherQuiz.questions = [
+    new Question('Which is Warmer?', 'temp', '°C'),
+    new Question('Which is Windier?', 'wind_spd', 'km/h'),
+    new Question('Which is More Humid?', 'rh', '%'),
+    new Question('Which is Cloudier?', 'clouds', '%'),
+]
+
+
+
+weatherQuiz.askQuestion = function() {
+    x = Math.floor(Math.random() * weatherQuiz.questions.length);
+    weatherQuiz.currentQuestion = weatherQuiz.questions[x];
+    $('.currentQuestion').text(weatherQuiz.currentQuestion.questionPhrase)
+}
 
 weatherQuiz.getWeather = function () {
     $.ajax({
@@ -418,7 +446,7 @@ weatherQuiz.getWeather = function () {
             format: 'json'
         }
     }).then(function (res) {
-        weatherQuiz.valueOne = (res.data[0].temp);
+        weatherQuiz.valueOne = res.data[0][weatherQuiz.currentQuestion.API]
     });
 
     $.ajax({
@@ -431,7 +459,7 @@ weatherQuiz.getWeather = function () {
             format: 'json'
         }
     }).then(function (res) {
-        weatherQuiz.valueTwo = (res.data[0].temp)
+        weatherQuiz.valueTwo = res.data[0][weatherQuiz.currentQuestion.API]
     });
 }
 
@@ -483,10 +511,7 @@ weatherQuiz.refresh = function () {
 
 $('.nextQuestion').on('click', function() {
     if ($('h4').hasClass('correct') || $('h4').hasClass('incorrect')) {
-        weatherQuiz.refresh();
-        weatherQuiz.getCity()
-        weatherQuiz.getWeather(),
-        weatherQuiz.getCityImages()
+        weatherQuiz.init()
     }
 })
 
@@ -504,8 +529,8 @@ $('.inputOptionOne').on('click', function() {
         $('.inputOptionOne').addClass('incorrectImage')
         $('.inputOptionTwo').addClass('correctImage')
     }
-    $('.answerOne').html(weatherQuiz.valueOne)
-    $('.answerTwo').html(weatherQuiz.valueTwo)
+    $('.answerOne').html(`${weatherQuiz.valueOne} ${weatherQuiz.currentQuestion.units}`)
+    $('.answerTwo').html(`${weatherQuiz.valueTwo} ${weatherQuiz.currentQuestion.units}`)
 })
 $('.inputOptionTwo').on('click', function() {
         // checking if option 2 is correct answer, and using hasClass to prevent multiple activations per question
@@ -518,30 +543,20 @@ $('.inputOptionTwo').on('click', function() {
         $('.inputOptionTwo').addClass('incorrectImage')
         $('.inputOptionOne').addClass('correctImage')
     }
-    $('.answerOne').html(weatherQuiz.valueOne)
-    $('.answerTwo').html(weatherQuiz.valueTwo)
+    $('.answerOne').html(`${weatherQuiz.valueOne} ${weatherQuiz.currentQuestion.units}`)
+    $('.answerTwo').html(`${weatherQuiz.valueTwo} ${weatherQuiz.currentQuestion.units}`)
 })
 
+weatherQuiz.init = () => {
+    weatherQuiz.refresh();
 
-
-// populate first question
-// randomize  locations from array of popular cities
-// pull live temperature data for both randomized cities from weather API
-// populate question,
-// generic template with names of cities plugged in
-// compare temperatures to determine answer
-// compare answer to user submission
-// respond with correct or incorrect styling and display current temperatures for both locations
-// populate next question
-
-// quizStartcity.init = () => {
-//     getCity();
-//     getCityImages();
-//     getWeather();
-// }
-
-$(function () {
     weatherQuiz.getCity();
     weatherQuiz.getCityImages();
+
+    weatherQuiz.askQuestion();
     weatherQuiz.getWeather();
+}
+
+$(function () {
+    weatherQuiz.init()
 })
