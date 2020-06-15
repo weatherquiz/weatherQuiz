@@ -555,6 +555,11 @@ $('.inputOptionTwo').on('click', function () {
         $('.inputOptionTwo').addClass('incorrectImage')
         $('.inputOptionOne').addClass('correctImage')
     }
+    else if (weatherQuiz.valueOne == weatherQuiz.valueTwo && !$('h4').hasClass('correct') && !$('h4').hasClass('incorrect')) {
+        $('h4').addClass('correct').text('They are exactly equal!')
+        $('.inputOptionOne').addClass('correctImage')
+        $('.inputOptionTwo').addClass('correctImage')
+    }
     $('.answerOne').html(`${weatherQuiz.valueOne} ${weatherQuiz.currentQuestion.units}`)
     $('.answerTwo').html(`${weatherQuiz.valueTwo} ${weatherQuiz.currentQuestion.units}`)
 })
