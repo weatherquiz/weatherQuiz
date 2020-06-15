@@ -249,7 +249,7 @@ h1, h2, h3 {
 main {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#2561a0), to(skyblue));
   background-image: linear-gradient(to bottom, #2561a0, skyblue);
-  min-height: 100vh;
+  min-height: calc(100vh - 100px);
   padding-top: 50px;
   color: white;
 }
@@ -270,8 +270,13 @@ header {
   padding-top: 50px;
 }
 
+header img {
+  margin: 10px;
+}
+
 h1 {
   margin: 0 50px;
+  text-align: center;
 }
 
 form {
@@ -289,7 +294,7 @@ form {
 .inputOptionOne,
 .inputOptionTwo {
   width: 33%;
-  height: 700px;
+  height: calc(100vh - 175px);
   -webkit-box-ordinal-group: 2;
       -ms-flex-order: 1;
           order: 1;
@@ -305,6 +310,12 @@ form {
       -ms-flex-align: center;
           align-items: center;
   border-radius: 5%;
+}
+
+.inputOptionTwo {
+  -webkit-box-ordinal-group: 4;
+      -ms-flex-order: 3;
+          order: 3;
 }
 
 .infoOne,
@@ -366,13 +377,6 @@ form {
   background-color: #4b4b4b;
 }
 
-.inputOptionTwo {
-  width: 33%;
-  -webkit-box-ordinal-group: 4;
-      -ms-flex-order: 3;
-          order: 3;
-}
-
 .correct {
   color: green;
 }
@@ -399,4 +403,60 @@ form {
 .incorrectImage {
   -webkit-box-shadow: 0 0 18px 10px red;
           box-shadow: 0 0 18px 10px red;
+}
+
+@media (max-width: 1000px) {
+  form {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+  }
+  .center {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    width: 100%;
+  }
+  .inputOptionOne {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+  }
+  .inputOptionOne,
+  .inputOptionTwo {
+    width: calc(50% - 10px);
+    margin: 5px;
+  }
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: 30px;
+    margin: 0 10px;
+  }
+  .inputOptionOne,
+  .inputOptionTwo {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media (max-width: 650px) {
+  h1 {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 550px) {
+  h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 20px;
+  }
 }

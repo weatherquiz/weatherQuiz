@@ -1,6 +1,6 @@
 main {
     background-image: linear-gradient(to bottom, #2561a0, skyblue);
-    min-height: 100vh;
+    min-height: calc(100vh - 100px);
     padding-top: 50px;
     color: white;
 }
@@ -13,8 +13,13 @@ header {
     padding-top: 50px;
 }
 
+header img {
+    margin: 10px;
+}
+
 h1 {
     margin: 0 50px;
+    text-align: center;
 }
 
 form {
@@ -24,12 +29,16 @@ form {
 .inputOptionOne,
 .inputOptionTwo {
     width: 33%;
-    height: 700px;
+    height: calc(100vh - 175px);
     order: 1;
     position: relative;
     background-size: cover;
     @include flexCenter;
     border-radius: 5%;
+}
+
+.inputOptionTwo {
+    order: 3;
 }
 
 .infoOne,
@@ -51,9 +60,4 @@ form {
 .nextQuestion {
     @include buttonStyle;
     padding: 10px;
-}
-
-.inputOptionTwo {
-    width: 33%;
-    order: 3;
 }
