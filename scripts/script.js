@@ -509,13 +509,23 @@ weatherQuiz.refresh = function () {
     $('div').removeClass('correctImage').removeClass('incorrectImage')
 };
 
+//Makes pressing enter or space while focusing on the buttons perform the same action as clicking (for accessability reasons)
+document.querySelectorAll('.clickable').forEach(item => {
+    item.addEventListener('keydown', (event) => {
+        if (event.code === 'Space' || event.code === 'Enter') {
+            item.click();
+        }
+    })
+})
+
 $('.nextQuestion').on('click', function() {
     if ($('h4').hasClass('correct') || $('h4').hasClass('incorrect')) {
         weatherQuiz.init()
     }
+    else {
+        alert('Please select a city!')
+    }
 })
-
-
 
 
 $('.inputOptionOne').on('click', function() {
@@ -527,6 +537,11 @@ $('.inputOptionOne').on('click', function() {
     } else if (weatherQuiz.valueOne < weatherQuiz.valueTwo && !$('h4').hasClass('correct')){
         $('h4').addClass('incorrect').text('Incorrect!')
         $('.inputOptionOne').addClass('incorrectImage')
+        $('.inputOptionTwo').addClass('correctImage')
+    }
+    else if (weatherQuiz.valueOne == weatherQuiz.valueTwo && !$('h4').hasClass('correct') && !$('h4').hasClass('incorrect')){
+        $('h4').addClass('correct').text('They are exactly equal!')
+        $('.inputOptionOne').addClass('correctImage')
         $('.inputOptionTwo').addClass('correctImage')
     }
     $('.answerOne').html(`${weatherQuiz.valueOne} ${weatherQuiz.currentQuestion.units}`)
