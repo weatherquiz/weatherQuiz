@@ -399,7 +399,7 @@ const locales = [
 
 const weatherQuiz = {};
 weatherQuiz.apiURL = 'https://api.weatherbit.io/v2.0/current';
-weatherQuiz.apikey = '651ad6758ca042e2ba4e3da504485e1d';
+weatherQuiz.apikey = '1c1d1ecdd7804a91a5f7476fe0633911';
 
 weatherQuiz.cityOne = '';
 weatherQuiz.cityTwo = '';
@@ -418,8 +418,6 @@ class Question {
     }
 }
 
-
-
 weatherQuiz.questions = [
     new Question('Which is Warmer?', 'temp', '°C'),
     new Question('Which is Windier?', 'wind_spd', 'km/h'),
@@ -427,40 +425,38 @@ weatherQuiz.questions = [
     new Question('Which is Cloudier?', 'clouds', '%'),
 ]
 
-
-
-weatherQuiz.askQuestion = function() {
+weatherQuiz.askQuestion = function () {
     x = Math.floor(Math.random() * weatherQuiz.questions.length);
     weatherQuiz.currentQuestion = weatherQuiz.questions[x];
     $('.currentQuestion').text(weatherQuiz.currentQuestion.questionPhrase)
 }
 
 weatherQuiz.getWeather = function () {
-    $.ajax({
-        url: weatherQuiz.apiURL,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-            key: weatherQuiz.apikey,
-            city: weatherQuiz.cityOne,
-            format: 'json'
-        }
-    }).then(function (res) {
-        weatherQuiz.valueOne = res.data[0][weatherQuiz.currentQuestion.API]
-    });
+        $.ajax({
+            url: weatherQuiz.apiURL,
+            method: 'GET',
+            dataType: 'json',
+            data: {
+                key: weatherQuiz.apikey,
+                city: weatherQuiz.cityOne,
+                format: 'json'
+            }
+        }).then(function (res) {
+            weatherQuiz.valueOne = res.data[0][weatherQuiz.currentQuestion.API]
+        });
 
-    $.ajax({
-        url: weatherQuiz.apiURL,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-            key: weatherQuiz.apikey,
-            city: weatherQuiz.cityTwo,
-            format: 'json'
-        }
-    }).then(function (res) {
-        weatherQuiz.valueTwo = res.data[0][weatherQuiz.currentQuestion.API]
-    });
+        $.ajax({
+            url: weatherQuiz.apiURL,
+            method: 'GET',
+            dataType: 'json',
+            data: {
+                key: weatherQuiz.apikey,
+                city: weatherQuiz.cityTwo,
+                format: 'json'
+            }
+        }).then(function (res) {
+            weatherQuiz.valueTwo = res.data[0][weatherQuiz.currentQuestion.API]
+        });
 }
 
 weatherQuiz.getCityImages = function () {
@@ -489,7 +485,6 @@ weatherQuiz.getCityImages = function () {
     }).then(function (res) {
         $('.inputOptionTwo').css('background-image', `url(${res.results[0].urls.small})`)
     });
-
 }
 
 weatherQuiz.getCity = function () {
@@ -509,6 +504,7 @@ weatherQuiz.refresh = function () {
     $('div').removeClass('correctImage').removeClass('incorrectImage')
 };
 
+
 //Makes pressing enter or space while focusing on the buttons perform the same action as clicking (for accessability reasons)
 document.querySelectorAll('.clickable').forEach(item => {
     item.addEventListener('keydown', (event) => {
@@ -519,6 +515,7 @@ document.querySelectorAll('.clickable').forEach(item => {
 })
 
 $('.nextQuestion').on('click', function() {
+
     if ($('h4').hasClass('correct') || $('h4').hasClass('incorrect')) {
         weatherQuiz.init()
     }
@@ -527,14 +524,14 @@ $('.nextQuestion').on('click', function() {
     }
 })
 
-
 $('.inputOptionOne').on('click', function() {
+
     // checking if option 1 is correct answer, and using hasClass to prevent multiple activations per question
     if (weatherQuiz.valueOne > weatherQuiz.valueTwo && !$('h4').hasClass('incorrect')) {
         $('h4').addClass('correct').text('Correct!')
         $('.inputOptionOne').addClass('correctImage')
         $('.inputOptionTwo').addClass('incorrectImage')
-    } else if (weatherQuiz.valueOne < weatherQuiz.valueTwo && !$('h4').hasClass('correct')){
+    } else if (weatherQuiz.valueOne < weatherQuiz.valueTwo && !$('h4').hasClass('correct')) {
         $('h4').addClass('incorrect').text('Incorrect!')
         $('.inputOptionOne').addClass('incorrectImage')
         $('.inputOptionTwo').addClass('correctImage')
@@ -547,8 +544,8 @@ $('.inputOptionOne').on('click', function() {
     $('.answerOne').html(`${weatherQuiz.valueOne} ${weatherQuiz.currentQuestion.units}`)
     $('.answerTwo').html(`${weatherQuiz.valueTwo} ${weatherQuiz.currentQuestion.units}`)
 })
-$('.inputOptionTwo').on('click', function() {
-        // checking if option 2 is correct answer, and using hasClass to prevent multiple activations per question
+$('.inputOptionTwo').on('click', function () {
+    // checking if option 2 is correct answer, and using hasClass to prevent multiple activations per question
     if (weatherQuiz.valueOne < weatherQuiz.valueTwo && !$('h4').hasClass('incorrect')) {
         $('h4').addClass('correct').text('Correct!')
         $('.inputOptionTwo').addClass('correctImage')
