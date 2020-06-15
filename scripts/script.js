@@ -1,4 +1,7 @@
-const locales = [
+const weatherQuiz = {};
+
+// array of cities for the Quiz
+weatherQuiz.locales = [
     {
         city: 'Addis Ababa',
         country: 'Ethiopia'
@@ -397,9 +400,9 @@ const locales = [
     }
 ]
 
-const weatherQuiz = {};
+// setting variables to default values for global use
 weatherQuiz.apiURL = 'https://api.weatherbit.io/v2.0/current';
-weatherQuiz.apikey = '1c1d1ecdd7804a91a5f7476fe0633911';
+weatherQuiz.apikey = '36f8097c5ac04b17a654731fdcfa0848';
 
 weatherQuiz.cityOne = '';
 weatherQuiz.cityTwo = '';
@@ -410,6 +413,7 @@ weatherQuiz.valueTwo = 0;
 
 weatherQuiz.currentQuestion = '';
 
+// Create question to be asked and holds multiple values to be used to update DOM later
 class Question {
     constructor(Phrase, API, units) {
         this.questionPhrase = Phrase
@@ -417,7 +421,6 @@ class Question {
         this.units = units
     }
 }
-
 weatherQuiz.questions = [
     new Question('Which is Warmer?', 'temp', '°C'),
     new Question('Which is Windier?', 'wind_spd', 'km/h'),
@@ -425,12 +428,26 @@ weatherQuiz.questions = [
     new Question('Which is Cloudier?', 'clouds', '%'),
 ]
 
+// chooses one of the questions randomly and displays it to user
 weatherQuiz.askQuestion = function () {
     x = Math.floor(Math.random() * weatherQuiz.questions.length);
     weatherQuiz.currentQuestion = weatherQuiz.questions[x];
     $('.currentQuestion').text(weatherQuiz.currentQuestion.questionPhrase)
 }
 
+// gets 2 random cities from array
+weatherQuiz.getCity = function () {
+    weatherQuiz.randOne = Math.floor(Math.random() * weatherQuiz.locales.length);
+    weatherQuiz.randTwo = Math.floor(Math.random() * weatherQuiz.locales.length);
+
+    weatherQuiz.cityOne = weatherQuiz.locales[weatherQuiz.randOne].city;
+    weatherQuiz.cityTwo = weatherQuiz.locales[weatherQuiz.randTwo].city;
+
+    $('.cityOne').html(weatherQuiz.cityOne);
+    $('.cityTwo').html(weatherQuiz.cityTwo);
+}
+
+// pulls weather data from weather API
 weatherQuiz.getWeather = function () {
         $.ajax({
             url: weatherQuiz.apiURL,
@@ -459,6 +476,7 @@ weatherQuiz.getWeather = function () {
         });
 }
 
+// pulls image using city as a search term via Unsplash API and displays it
 weatherQuiz.getCityImages = function () {
     $.ajax({
         url: 'https://api.unsplash.com/search/photos/',
@@ -487,23 +505,12 @@ weatherQuiz.getCityImages = function () {
     });
 }
 
-weatherQuiz.getCity = function () {
-    weatherQuiz.randOne = Math.floor(Math.random() * locales.length);
-    weatherQuiz.randTwo = Math.floor(Math.random() * locales.length);
-
-    weatherQuiz.cityOne = locales[weatherQuiz.randOne].city;
-    weatherQuiz.cityTwo = locales[weatherQuiz.randTwo].city;
-
-    $('.cityOne').html(weatherQuiz.cityOne);
-    $('.cityTwo').html(weatherQuiz.cityTwo);
-}
-
+// clear all classes and styling pushed to DOM to prepare for next question
 weatherQuiz.refresh = function () {
     $('h4').empty().removeClass('correct').removeClass('incorrect');
     $('h3').empty()
     $('div').removeClass('correctImage').removeClass('incorrectImage')
 };
-
 
 //Makes pressing enter or space while focusing on the buttons perform the same action as clicking (for accessability reasons)
 document.querySelectorAll('.clickable').forEach(item => {
@@ -514,8 +521,8 @@ document.querySelectorAll('.clickable').forEach(item => {
     })
 })
 
+// populates next question, alerts user if no city is selected
 $('.nextQuestion').on('click', function() {
-
     if ($('h4').hasClass('correct') || $('h4').hasClass('incorrect')) {
         weatherQuiz.init()
     }
@@ -524,8 +531,8 @@ $('.nextQuestion').on('click', function() {
     }
 })
 
+// checking users choice with answer
 $('.inputOptionOne').on('click', function() {
-
     // checking if option 1 is correct answer, and using hasClass to prevent multiple activations per question
     if (weatherQuiz.valueOne > weatherQuiz.valueTwo && !$('h4').hasClass('incorrect')) {
         $('h4').addClass('correct').text('Correct!')
@@ -564,6 +571,7 @@ $('.inputOptionTwo').on('click', function () {
     $('.answerTwo').html(`${weatherQuiz.valueTwo} ${weatherQuiz.currentQuestion.units}`)
 })
 
+// init function to run on page load or new question
 weatherQuiz.init = () => {
     weatherQuiz.refresh();
 
@@ -574,6 +582,7 @@ weatherQuiz.init = () => {
     weatherQuiz.getWeather();
 }
 
+// Document ready
 $(function () {
     weatherQuiz.init()
 })
